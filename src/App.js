@@ -1,28 +1,45 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import ReactAudioPlayer from 'react-audio-player';
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+    render() {
+        return (
+            <div>
+                <h1>Player here!</h1>
+                <ReactAudioPlayer
+                    src="http://www.largesound.com/ashborytour/sound/brobob.mp3"
+                    autoPlay
+                    controls
+                    onPause={() => console.log("pause")}
+                    onPlay={() => console.log("play")}
+                />
+            </div>
+        );
+    }
+
+    componentDidMount() {
+        var socket = new SockJS('http://localhost:4444/ws');
+        this.stompClient = Stomp.over(socket);
+        this.stompClient.connect({}, (frame) => {
+            // setConnected(true);
+            console.log('Connected: ' + frame);
+            this.stompClient.subscribe('/topic/test', function (greeting) {
+                console.log('New MSG: ' + JSON.parse(greeting.body).content);
+            });
+            this.stompClient.send("/app/test", {}, JSON.stringify({'name': 'qq'}));
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.stompClient !== null) {
+            this.stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
 }
 
 export default App;
