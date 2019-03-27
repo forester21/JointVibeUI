@@ -10,6 +10,7 @@ class PlayList extends Component {
         )
     }
 
+    //TODO add keys
     renderList() {
         return this.props.tracks.map(track => <h1>{track.trackName}</h1>);
     }

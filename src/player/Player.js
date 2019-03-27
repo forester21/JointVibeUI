@@ -11,7 +11,7 @@ class Player extends Component {
         this.state = {
             nowPlaying: {
                 trackUrl: null,
-                trackName: 'noTracks'
+                trackName: null
             },
             tracks: []
         }
@@ -21,14 +21,7 @@ class Player extends Component {
         return (
             <div>
                 <h1>{this.state.nowPlaying.trackName}</h1>
-                <ReactAudioPlayer
-                    id='player'
-                    src={this.state.nowPlaying.trackUrl}
-                    autoPlay
-                    controls
-                    onEnded={this.sendMessage1}
-                />
-                <PlayList tracks={this.state.tracks}/>
+                <div>{this.getPage()}</div>
                 <br/>
                 <input type='button' onClick={this.sendMessage} value='GET'/>
             </div>
@@ -52,6 +45,22 @@ class Player extends Component {
         console.log("Disconnected");
     }
 
+    getPage() {
+        return this.state.nowPlaying.trackUrl === null ?
+            <h1>Треклист пуст</h1> :
+            <div>
+                <ReactAudioPlayer
+                    id='player'
+                    src={this.state.nowPlaying.trackUrl}
+                    autoPlay
+                    controls
+                    onEnded={this.sendMessage1}
+                />
+                <PlayList tracks={this.state.tracks}/>
+            </div>
+
+    }
+
     refreshTrackList = (trackList) => {
         console.log(JSON.parse(trackList.body));
         this.setState(JSON.parse(trackList.body));
@@ -59,7 +68,7 @@ class Player extends Component {
 
     sendMessage = () => {
         if (this.stompClient !== null) {
-            this.stompClient.send("/app/test");
+            this.stompClient.send("/app/test/" + this.props.match.params.playerId );
         }
     };
 
