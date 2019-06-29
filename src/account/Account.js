@@ -1,31 +1,40 @@
 import React, {Component} from 'react'
-import {authorize} from '../vk/Vk'
-import queryString from 'query-string'
+import {webServiceUrl} from "../Constants";
 
-class Account extends Component{
+class Account extends Component {
 
     state = {
-        vkKey : null
+        userId: null
     };
 
-    componentDidMount(){
-        const values = queryString.parse(this.props.location.search);
-        if (values.user_id != undefined){
-            this.setState({vkKey: values.user_id});
-        }
+    componentDidMount() {
+        this.loadUserId();
+    }
+
+    loadUserId() {
+        fetch(webServiceUrl + '/userId', {
+            method: "POST",
+            body: window.localStorage.getItem('jv_token')
+        })
+            .then(response => {
+                return response.text()
+            })
+            .then(response => this.setState({
+                authUrl: response
+            }))
+            .catch(err => console.log(err));
     }
 
     render() {
-        console.log(this.props);
         return (
             <div>
-                {this.state.vkKey == null ?
-                    <button onClick={authorize}>Authorize!</button> :
-                    <h1>Your page! key = {this.state.vkKey}</h1>
-                }
+                <h1>HI! THAT'S UR PAGE!</h1>
+                <h1>Your id = {this.state.userId}</h1>
             </div>
         );
     }
+
+
 }
 
 export default Account

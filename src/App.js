@@ -5,6 +5,7 @@ import Player from "./player/Player";
 import ChoosePlayer from "./player/ChoosePlayer";
 import {BrowserRouter, Link, Route, Switch} from 'react-router-dom'
 import Account from './account/Account'
+import Auth from "./account/Auth";
 
 class App extends Component {
 
@@ -14,6 +15,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/account' component={Account}/>
+                    <Route exact path='/auth' component={Auth}/>
                     <Route exact path='/player' component={ChoosePlayer}/>
                     <Route path='/player/:playerId' component={Player}/>
                 </Switch>

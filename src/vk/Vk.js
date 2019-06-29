@@ -1,17 +1,19 @@
 import {webServiceUrl} from "../Constants";
 
 function authorize(){
-    getVkAuthLink();
+    return getVkAuthLink();
 }
 
 function getVkAuthLink(){
-    fetch(webServiceUrl + '/auth', { method: 'GET', redirect: 'follow'})
-        .then(response => {})
+    let url = '321';
+    fetch(webServiceUrl + '/auth')
+        .then(response => {return response.text()})
+        .then(function (response) {
+            console.log(response);
+            url = response;
+        })
         .catch(err => console.log(err));
-}
-
-function authorize2() {
-
+    return url;
 }
 
 export {authorize}
