@@ -1,35 +1,34 @@
 import React, {Component} from 'react'
-import {webServiceUrl} from "../Constants";
+import {WEB_SERVICE_URL} from "../Constants";
+import jvFetch from "../utils/customFetch";
 
 class Account extends Component {
 
     state = {
-        userId: null
+        firstName: null,
+        lastName: null
     };
 
     componentDidMount() {
-        this.loadUserId();
+        this.loadUserInfo();
     }
 
-    loadUserId() {
-        fetch(webServiceUrl + '/userId', {
-            method: "POST",
-            body: window.localStorage.getItem('jv_token')
+    loadUserInfo = () => {
+        jvFetch(this, WEB_SERVICE_URL + '/api/account/userInfo', this.updateUserInfo);
+    };
+
+    updateUserInfo = (userInfo) => {
+        this.setState({
+            firstName : userInfo.response[0].first_name,
+            lastName : userInfo.response[0].last_name
         })
-            .then(response => {
-                return response.text()
-            })
-            .then(response => this.setState({
-                authUrl: response
-            }))
-            .catch(err => console.log(err));
-    }
+    };
 
     render() {
         return (
             <div>
                 <h1>HI! THAT'S UR PAGE!</h1>
-                <h1>Your id = {this.state.userId}</h1>
+                <h1>Welcome, {this.state.firstName} {this.state.lastName}!</h1>
             </div>
         );
     }

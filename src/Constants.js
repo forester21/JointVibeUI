@@ -1,3 +1,3 @@
-const webServiceUrl = 'http://localhost:1111';
+const WEB_SERVICE_URL = 'http://localhost:1111';
 
-export {webServiceUrl}
+export {WEB_SERVICE_URL}

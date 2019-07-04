@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {webServiceUrl} from "../Constants";
+import {WEB_SERVICE_URL} from "../Constants";
 import queryString from "query-string";
 
 class Auth extends Component {
@@ -33,7 +33,7 @@ class Auth extends Component {
     }
 
     loadAuthLink = () => {
-        fetch(webServiceUrl + '/auth')
+        fetch(WEB_SERVICE_URL + '/api/auth/authLink')
             .then(response => {
                 return response.text()
             })

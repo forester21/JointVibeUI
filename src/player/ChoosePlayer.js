@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 class ChoosePlayer extends Component {
 
@@ -31,7 +31,7 @@ class ChoosePlayer extends Component {
 
     getPlayerLink = () => {
         return '/player/' + this.state.playerName;
-    }
+    };
 }
 
 export default ChoosePlayer
